@@ -11,6 +11,7 @@
 # prev idx도 추가한다.
 # while로 돌린다.
 
+
 def get_bfs(matrix, idx_list):
     prev_list = [0]
     while True:

@@ -17,6 +17,10 @@
 """
 
 
+# def get_gragh2(nodes, edge):
+#     # dict가 아닌 이전 계층의 리스트만을 갖게 한다.
+
+
 def get_gragh(nodes, edge):
     # 1부터 시작한다.
     # 방향은 내려가는 방향이 있다.
@@ -24,6 +28,7 @@ def get_gragh(nodes, edge):
 
     d = dict()
     upper = [1]
+    k = [0]
     for i in range(nodes):
         k = d.keys()
         if i == 0:
@@ -37,10 +42,10 @@ def get_gragh(nodes, edge):
                 for j in l:
                     deleting_list = []
                     for e in edge:
-                        x = list(e)
-                        if j in x:
-                            x.remove(j)
-                            y = x[0]
+                        if j in e:
+                            x = list(e)
+                            # x.remove(j)
+                            y = x[0] if x[0] != j else x[1]
 
                             if y not in upper:
                                 if i in k:
@@ -56,14 +61,51 @@ def get_gragh(nodes, edge):
         if i in k:
             upper += d[i]
     # print(d)
-    answer = len(d[max(d.keys())])
+    answer = len(d[max(k)])
     return answer
 
 
 def solution(n, edge):
-    edge = list(map(lambda x:sorted(x), edge))
+    # edge = list(map(lambda x:sorted(x), edge)).sorted(x[0])
     # print(edge)
-    print(get_gragh(n, edge))
+    edge = sorted(list(map(lambda x: sorted(x), edge)), key=lambda x: x[0])
+    start = [1]
+    prev_list = []
+    while True:
+        temp = []
+
+        for i in start:
+            cnt = 0
+            print("처음", edge)
+            for j in edge:
+                print("이전", prev_list)
+                if i == j[0]:
+                    if j[1] in prev_list:
+                        continue
+                    print("맞네", j)
+                    cnt += 1
+                    target = j[1]
+                    temp.append(target)
+                else:
+                    break
+            edge = edge[cnt:]
+            print("변경", edge)
+            print("")
+
+        print("템프", temp)
+        if not temp or not edge:
+            break
+
+        start = temp
+        prev_list += temp
+
+    if temp:
+        print(temp)
+        return len(set(temp))
+
+    if edge:
+        return len(edge)
+
 
 
 if __name__ == "__main__":
