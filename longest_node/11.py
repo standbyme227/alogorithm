@@ -22,3 +22,5 @@ def solution(n, edge):
         if len(prev) == n:
             return n - cnt
         cnt = n
+
+
