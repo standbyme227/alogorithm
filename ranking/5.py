@@ -18,27 +18,48 @@ def solution():
     results = [[4, 3], [4, 2], [3, 2], [1, 2], [2, 5]]
 
     win = [deque() for i in range(n)]
-    lose = [deque() for i in range(n)]
     for r in results:
         w = r[0]
         l = r[1]
 
-        # lose[l - 1].append(w)
         win[w - 1].append(l)
-        # for i in matrix:
-        #     if w in i and l not in i:
-        #         i.append(l)
-    # results = [[i for i in range(1, n + 1)]]
     print(win)
+    # results = [[] for i in range(1, n+1)]
     results = []
     for idx in range(n):
         v = idx + 1
 
         # 내가 이긴애들
         win_list = win[idx]
+        if not results:
+            results.append([v])
+            results.append(list(win_list))
+        else:
+            idx = n
+            for w in win_list:
+                for i, l in enumerate(results):
+                    if w in l:
+                        if i <= idx:
+                            idx = i
+            if idx == n:
+                for i, l in enumerate(results):
+                    if v in l:
+                        if i <= idx:
+                            idx = i
+                if len(results) == idx + 1:
+                    if win_list:
+                        results.append(list(win_list))
+            else:
+                if idx == 0:
+                    # results.insert(0, [v])
+                    results[idx].append(v)
+                else:
+                    results[idx-1].append(v)
+    print(results)
 
-        # if set(win_list) - results
-        pass
+
+
+
 
 
 
