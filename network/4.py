@@ -15,21 +15,19 @@ def solution():
 
     # 오름차순 정렬
     arr.sort(key=lambda x: x[2])
-    new_arr = []
+    matrix = [[] for i in range(n)]
+    current = arr[0][0]
 
-    for i in arr:
-        new_arr.append(i)
-
-        current = new_arr[0][0]  # index니까 -1
-        matrix = [[] for i in range(n)]
-        for a in new_arr:
-            x = a[0]
-            y = a[1]
-
-            matrix[x - 1].append(y)
-            matrix[y - 1].append(x)
-
+    results = 0
+    for a in arr:
         is_cycle = False
+
+        x = a[0]
+        y = a[1]
+
+        matrix[x - 1].append(y)
+        matrix[y - 1].append(x)
+
         stack = [current]
         visited = []
 
@@ -51,10 +49,13 @@ def solution():
         # DFS를 위한 방법이 stack으로 보여진다.
 
         if is_cycle is True:
-            p = new_arr.pop()
-            # print("빠진놈", p)
+            matrix[x - 1].pop()
+            matrix[y - 1].pop()
+        else:
+            # new_arr.append(a)
+            results += a[2]
 
-    print(sum(map(lambda x:x[2], new_arr)))
+    print(results)
 
 
 if __name__ == "__main__":

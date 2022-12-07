@@ -15,26 +15,28 @@ def solution():
 
     # 오름차순 정렬
     arr.sort(key=lambda x: x[2])
-    new_arr = []
-
-    for i in arr:
-        new_arr.append(i)
-
-        current = new_arr[0][0]  # index니까 -1
-        matrix = [[] for i in range(n)]
-        for a in new_arr:
-            x = a[0]
-            y = a[1]
-
-            matrix[x - 1].append(y)
-            matrix[y - 1].append(x)
-
+    matrix = [[] for i in range(n)]
+    results = 0
+    for a in arr:
         is_cycle = False
+
+        x = a[0]
+        y = a[1]
+
+        current = x
         stack = [current]
         visited = []
 
         while stack:
             visited.append(current)
+
+            if current == x:
+                if y not in visited:
+                    stack.append(y)
+
+            if current == y:
+                if x not in visited:
+                    stack.append(x)
 
             neighbors = matrix[current - 1]
             for i in neighbors:
@@ -45,16 +47,12 @@ def solution():
         if len(visited) != len(set(visited)):
             is_cycle = True
 
-        # 스택은 어떻게 쌓이는가?
-        # DFS를 진행한다.
-        # 가장 밑에까지가고 다른 형재로 간다.
-        # DFS를 위한 방법이 stack으로 보여진다.
+        if is_cycle is False:
+            matrix[x - 1].append(y)
+            matrix[y - 1].append(x)
+            results += a[2]
 
-        if is_cycle is True:
-            p = new_arr.pop()
-            # print("빠진놈", p)
-
-    print(sum(map(lambda x:x[2], new_arr)))
+    print(results)
 
 
 if __name__ == "__main__":
