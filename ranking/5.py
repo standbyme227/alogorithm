@@ -1,15 +1,5 @@
-# 매트릭
-# for 문을 돈다.
-
-
-from collections import deque
-
-n = 3
-
-
-# [[1, 3], [4, 3], [3, 2], [1, 2], [5, 3]]
-#
-# [[4, 1, 5], 3, 2]
+# 확정적인 순위를 알 수 있는 방법?
+# 내가 얘를 이기면
 
 
 # 내가 이긴애들을 다 가지고 있어보자
@@ -17,58 +7,39 @@ def solution():
     n = 5
     results = [[4, 3], [4, 2], [3, 2], [1, 2], [2, 5]]
 
-    win = [deque() for i in range(n)]
+    matrix = [[] for i in range(n)]
     for r in results:
         w = r[0]
-        l = r[1]
+        l = [r[1]]
+        target = matrix[w - 1]
+        for i in l:
+            if i not in target:
+                target.append(i)
 
-        win[w - 1].append(l)
-    print(win)
-    # results = [[] for i in range(1, n+1)]
-    results = []
-    for idx in range(n):
+        while l:
+            temp = []
+            for j in l:
+                for i in results:
+                    if i[0] == j and i[1] not in target:
+                        target.append(i[1])
+                        temp.append(i[1])
+            l = temp
+
+    answer = 0
+    for idx, i in enumerate(matrix):
         v = idx + 1
+        i.append(v)
 
-        # 내가 이긴애들
-        win_list = win[idx]
-        if not results:
-            results.append([v])
-            results.append(list(win_list))
-        else:
-            idx = n
-            for w in win_list:
-                for i, l in enumerate(results):
-                    if w in l:
-                        if i <= idx:
-                            idx = i
-            if idx == n:
-                for i, l in enumerate(results):
-                    if v in l:
-                        if i <= idx:
-                            idx = i
-                if len(results) == idx + 1:
-                    if win_list:
-                        results.append(list(win_list))
-            else:
-                if idx == 0:
-                    # results.insert(0, [v])
-                    results[idx].append(v)
-                else:
-                    results[idx-1].append(v)
-    print(results)
+        for idx2, j in enumerate(matrix):
+            v2 = idx2 + 1
+            if v in j and v2 not in i:
+                i.append(v2)
 
+        if len(i) == n:
+            answer += 1
 
+    return answer
 
-
-
-
-
-
-
-
-
-
-# 5, [[1, 2], [4, 3], [4, 2], [3, 2], [2, 5]]
 
 if __name__ == "__main__":
     # node_count = int(input("노드의 수를 넣어주세요"))
